@@ -1,17 +1,18 @@
 <!DOCTYPE html><html lang="ht">
 <head>
   <meta charset="utf-8" />
-  <!-- META VIEWPORT (minimal change to disable pinch-zoom) -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#000000" />
-  <title>Adam_D'H7</title>  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#000000" />
+  <title>Adam_D'H7</title>
+  <link rel="manifest" href="manifest.json" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Adam_D'H7" />
   <link rel="apple-touch-icon" href="https://res.cloudinary.com/dckwrqrur/image/upload/v1757205404/tf-stream-url/Screenshot_20250906_202106_Chrome_go9vhu.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />  <!-- Font Awesome CDN added so icons like fab fa-facebook-f afiiche san chanje UI -->  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />  <style>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
     :root{
       --card-max-width:920px;
       --card-min-height:80px;
@@ -19,46 +20,31 @@
       --mini-w:100px;
       --mini-h:70px;
     }
-    html,body{height:100%;}
-    body{
-      margin:0;
-      background:#000;
-      color:#fff;
-      font-family:'Roboto',sans-serif;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      padding-bottom:60px;
-    }
+    html,body{height:100%; margin:0; padding:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow:hidden; -webkit-touch-callout:none; -webkit-user-select:none; -ms-user-select:none; user-select:none;}
+    body{padding-bottom:60px;}
 
-    .header{ padding:18px 16px; text-align:center; position:sticky; top:0; backdrop-filter: blur(10px); background: rgba(0,0,0,0.7); z-index:10; }
+    .header{ padding:18px 16px; text-align:center; position:fixed; top:0; left:0; right:0; backdrop-filter: blur(10px); background: rgba(0,0,0,0.7); z-index:10; display:flex; flex-direction:column; align-items:center; gap:8px; -webkit-user-select:text; user-select:text; touch-action:manipulation; }
     .logo{ font-size:26px; font-weight:700; background:linear-gradient(90deg,#fff,#000); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .search-container{ display:flex; justify-content:center; padding:8px 20px; }
-    .search-box{ width:100%; max-width:500px; background:#1c1c1e; border:none; padding:10px 14px; border-radius:12px; color:#fff; font-size:15px; outline:none; }
+    .search-container{ display:flex; justify-content:center; padding:8px 20px; width:100%; }
+    .search-box{ width:100%; max-width:500px; background:#1c1c1e; border:none; padding:10px 14px; border-radius:12px; color:#fff; font-size:15px; outline:none; -webkit-user-select:text; user-select:text; }
 
-    /* keep original explorerView behavior (scrollable) */
-    #explorerView{ padding:18px; max-height:calc(100vh - 120px); overflow-y:auto; background:#000; -webkit-overflow-scrolling:touch; }
+    /* loader */
+    .loader-wrap{ position:relative; height:28px; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+    .loader{ display:none; align-items:center; gap:8px; font-size:13px; color:#ddd; padding:6px 10px; border-radius:18px; background:rgba(255,255,255,0.02); pointer-events:auto; }
+    .loader .spinner{ width:16px; height:16px; border:2px solid rgba(255,255,255,0.12); border-top-color: #fff; border-radius:50%; animation:spin 1s linear infinite; display:inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .post-card{ background:#111; border-radius:14px; padding:14px; margin-bottom:18px; box-shadow:0 2px 8px rgba(0,0,0,0.7); }
-    .post-name{ font-weight:700; font-size:16px; margin:8px 0; color:#fff; text-align:left; }
+    /* explorerView set to absolute (fills remaining area) */
+    #explorerView{ position:absolute; top:76px; left:0; right:0; bottom:0; padding:18px; overflow-y:auto; background:#000; -webkit-overflow-scrolling:touch; box-sizing:border-box; }
+
+    .post-card{ background:#111; border-radius:14px; padding:14px; margin-bottom:18px; box-shadow:0 2px 8px rgba(0,0,0,0.7); -webkit-user-select:none; user-select:none; }
+    .post-name{ font-weight:700; font-size:16px; margin:8px 0; color:#fff; text-align:left; -webkit-user-select:text; user-select:text; }
     .post-text{ font-size:14px; color:#ddd; margin-bottom:10px; white-space:pre-wrap; text-align:left; }
     .post-desc{ font-size:13px; color:#ccc; margin-top:8px; text-align:left; }
 
     .media-wrap{ text-align:center; margin: 0 0 10px 0; }
 
-    .post-thumb-container {
-      position:relative;
-      display:inline-block;
-      box-sizing:border-box;
-      max-width:var(--card-max-width);
-      width:auto;
-      background:#000;
-      border-radius:12px;
-      overflow:hidden;
-      padding:0;
-      box-shadow: inset 0 0 18px rgba(0,0,0,0.45), 0 6px 18px rgba(0,0,0,0.6);
-      min-height:var(--card-min-height);
-      max-height:var(--card-max-height);
-    }
+    .post-thumb-container { position:relative; display:inline-block; box-sizing:border-box; max-width:var(--card-max-width); width:auto; background:#000; border-radius:12px; overflow:hidden; padding:0; box-shadow: inset 0 0 18px rgba(0,0,0,0.45), 0 6px 18px rgba(0,0,0,0.6); min-height:var(--card-min-height); max-height:var(--card-max-height); }
 
     .post-thumb, .post-thumb img, .post-thumb video, .post-thumb iframe { display:block; width:auto; max-width:100%; height:auto; max-height:calc(var(--card-max-height)); object-fit:contain; background:#000; border-radius:0; }
     .post-thumb iframe, .post-thumb video { display:block; width:100%; height:auto; }
@@ -72,69 +58,49 @@
     .ad-container iframe{ width:100%; height:100%; border:none; background:#000; }
     .skip-btn{ position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); border:none; color:#fff; padding:8px 12px; border-radius:6px; cursor:pointer; display:none; z-index:1001; }
 
-    @media (max-width:600px) {
-      :root { --mini-w:86px; --mini-h:62px; }
-    }
+    @media (max-width:600px) { :root { --mini-w:86px; --mini-h:62px; } }
 
-    .ad-overlay {
-      background: #000 !important;
-      pointer-events: auto;
-    }
+    .ad-overlay { background: #000 !important; pointer-events: auto; }
 
-    /* update banner */
-    #sw-update-banner{
-      position:fixed;
-      left:12px;
-      right:12px;
-      bottom:12px;
-      background:#111;
-      color:#fff;
-      padding:10px 14px;
-      border-radius:8px;
-      box-shadow:0 6px 18px rgba(0,0,0,.4);
-      font-family:sans-serif;
-      text-align:center;
-      z-index:99999;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:12px;
-    }
-    #sw-update-banner button{
-      background:#1a73e8;
-      color:#fff;
-      border:0;
-      padding:8px 12px;
-      border-radius:6px;
-      cursor:pointer;
-    }
+    #sw-update-banner{ position:fixed; left:12px; right:12px; bottom:12px; background:#111; color:#fff; padding:10px 14px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.4); font-family:sans-serif; text-align:center; z-index:99999; display:flex; align-items:center; justify-content:center; gap:12px; }
+    #sw-update-banner button{ background:#1a73e8; color:#fff; border:0; padding:8px 12px; border-radius:6px; cursor:pointer; }
 
-    /* ---------- HIDE SCROLLBARS VISUALLY BUT KEEP SCROLLING ---------- */
-    /* only target explorerView so UI layout unchanged */
-    #explorerView {
-      -ms-overflow-style: none; /* IE/Edge */
-      scrollbar-width: none;    /* Firefox */
-      touch-action: pan-y;      /* allow vertical pan (important for mobile scroll) */
-    }
-    #explorerView::-webkit-scrollbar {
-      display: none; /* WebKit */
-      width: 0;
-      height: 0;
-    }
+    /* HIDE ALL NATIVE SCROLLBARS (WebKit + Firefox + Edge) */
+    *::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    html, body, #explorerView { -ms-overflow-style: none; scrollbar-width: none; }
+    /* ensure no outline jumps */
+    :focus { outline: none; }
 
-  </style></head>
+    /* copy exceptions */
+    .post-name, input, textarea { -webkit-user-select: text !important; user-select: text !important; }
+    .post-name { cursor:text; }
+
+  </style>
+</head>
 <body>
-  <div class="header">
+  <div class="header" id="siteHeader">
     <div class="logo">Adam_D'H7</div>
     <div class="search-container">
-      <input id="searchBox" class="search-box" placeholder="Rechèch..." oninput="filterSearch(this.value)">
+      <input id="searchBox" class="search-box" placeholder="Rechèch..." autocomplete="off" />
     </div>
-  </div>  <div id="explorerView" role="main" aria-live="polite"></div>  <!-- Pré-roll overlay -->  <div id="adOverlay" class="ad-overlay" aria-hidden="true" role="dialog" aria-label="Publicité">
+    <div class="loader-wrap" aria-live="polite">
+      <div id="loader" class="loader" aria-hidden="true">
+        <span class="spinner" aria-hidden="true"></span>
+        <span class="loader-text">Chargement...</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="explorerView" role="main" aria-live="polite"></div>
+
+  <div id="adOverlay" class="ad-overlay" aria-hidden="true" role="dialog" aria-label="Publicité">
     <div class="ad-container" role="document" aria-label="Contenu publicité">
       <iframe id="prerollFrame" src="about:blank" allow="autoplay; fullscreen" title="Pré-roll Ad"></iframe>
       <button id="skipBtn" class="skip-btn" onclick="closeAd()" aria-label="Ignorer la publicité">Ignorer la pub</button>
     </div>
-  </div>  <script>
+  </div>
+
+  <script>
     /*******************************
      * CONFIG
      *******************************/
@@ -182,7 +148,6 @@
     let skipTimeout = null;
     let adCallback = null;
 
-    // popup-first ad flow: try to open real browser tab/window (user sees Chrome UI)
     function tryOpenAdInBrowser(url) {
       try {
         const features = 'noopener,noreferrer,toolbar=yes,location=yes,menubar=no,status=yes,scrollbars=yes,resizable=yes,width=960,height=720';
@@ -198,7 +163,6 @@
       }
     }
 
-    // best-effort impression ping
     function sendImpressionPing(url) {
       try {
         const img = new Image();
@@ -211,7 +175,6 @@
     }
 
     function showStickyAdSlot(url) {
-      // optional small sticky ad slot implementation
       try {
         let sticky = document.getElementById('__sticky_ad_slot');
         if (!sticky) {
@@ -296,17 +259,13 @@
       sendImpressionPing(url);
     }
 
-    // Always open popup (if possible) AND display the small overlay — user requested both
     function showAdPreferBrowserThenOverlay(adUrl) {
       const res = tryOpenAdInBrowser(adUrl);
-      // always show overlay as "petit fond"
       showAdOverlayInPage(adUrl);
-      // always ping impressions and show sticky slot if popup opened
       sendImpressionPing(adUrl);
       if (res.opened) {
         logAdEvent('popup_opened_and_overlay_shown', { url: adUrl });
         showStickyAdSlot(adUrl);
-        // trigger adCallback shortly after so the in-page media may start while popup is open
         setTimeout(()=>{ if (typeof adCallback === 'function') { try{ adCallback(); }catch(e){} adCallback = null; } }, 400);
       } else {
         logAdEvent('overlay_shown_popup_failed', { url: adUrl });
@@ -333,9 +292,13 @@
     });
 
     /*******************************
-     * Posts loading & click wiring
+     * Posts loading & optimized rendering
      *******************************/
     let allData = [];
+    const searchInput = document.getElementById('searchBox');
+    const loaderEl = document.getElementById('loader');
+    const explorerEl = document.getElementById('explorerView');
+    const headerEl = document.getElementById('siteHeader');
 
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -345,37 +308,33 @@
       return array;
     }
 
-    fetch("index.json")
-      .then(r => r.json())
-      .then(files => Promise.all(files.map(f => fetch(f).then(r => r.json()))))
-      .then(jsons => {
-        jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d));
-        shuffle(allData);
-        displayExplorer(allData);
-      }).catch(err => {
-        console.error("Erreur chargement JSON:", err);
-        const ex = document.getElementById("explorerView");
-        ex.innerHTML = '<div style="color:#999;padding:20px;text-align:center">Pa kapab chaje kontni (index.json).</div>';
-      });
-
-    function filterSearch(val){
-      const txt = (val || "").toLowerCase();
-      const filtered = allData.filter(p =>
-        ((p.Catégorie || p.Categorie || p.category || "").toString().toLowerCase() === "poste") &&
-        (
-          (p.Texte||p.Bio||p.Info||"").toString().toLowerCase().includes(txt) ||
-          (p.Name||"").toString().toLowerCase().includes(txt) ||
-          (p.Description||p.Desc||"").toString().toLowerCase().includes(txt)
-        )
-      );
-      displayExplorer(filtered);
+    function showLoader(){
+      if (!loaderEl) return;
+      loaderEl.style.display = 'inline-flex';
+      loaderEl.setAttribute('aria-hidden','false');
+    }
+    function hideLoader(){
+      if (!loaderEl) return;
+      loaderEl.style.display = 'none';
+      loaderEl.setAttribute('aria-hidden','true');
     }
 
-    function displayExplorer(data){
-      const ex = document.getElementById("explorerView");
-      ex.innerHTML = "";
-      data.forEach((post) => {
-        if (((post.Catégorie||post.Categorie||"" )).toString().toLowerCase() !== "poste") return;
+    // ensure explorerView fills space below header and body never scrolls
+    function adjustExplorerTop(){
+      try {
+        const h = headerEl ? headerEl.offsetHeight : 76;
+        explorerEl.style.top = h + 'px';
+      } catch(e){}
+    }
+    window.addEventListener('resize', adjustExplorerTop);
+    window.addEventListener('orientationchange', adjustExplorerTop);
+
+    // build cards using DocumentFragment to avoid layout thrash
+    function buildCardsFragment(data){
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < data.length; i++){
+        const post = data[i];
+        if (((post.Catégorie||post.Categorie||"")).toString().toLowerCase() !== "poste") continue;
 
         const card = document.createElement("div");
         card.className = "post-card";
@@ -419,10 +378,19 @@
           showAdPreferBrowserThenOverlay(AD_REDIRECT_URL);
         });
 
-        ex.appendChild(card);
-      });
+        frag.appendChild(card);
+      }
+      return frag;
+    }
 
-      displaySocialLinks();
+    // non-blocking display: build fragment then append in rAF
+    function displayExplorer(data){
+      explorerEl.innerHTML = "";
+      const frag = buildCardsFragment(data);
+      requestAnimationFrame(() => {
+        explorerEl.appendChild(frag);
+        displaySocialLinks();
+      });
     }
 
     function looksLikeVideo(src){
@@ -476,6 +444,7 @@
           const iframe = document.createElement("iframe");
           iframe.src = normalizeYouTubeEmbed(src);
           iframe.allow = "autoplay; fullscreen; picture-in-picture";
+          iframe.allowFullscreen = true;
           iframe.style.border = "none";
           iframe.style.display = "block";
           container.appendChild(iframe);
@@ -484,6 +453,7 @@
           const iframe = document.createElement("iframe");
           iframe.src = normalizeVimeoEmbed(src);
           iframe.allow = "autoplay; fullscreen; picture-in-picture";
+          iframe.allowFullscreen = true;
           iframe.style.border = "none";
           iframe.style.display = "block";
           container.appendChild(iframe);
@@ -549,7 +519,88 @@
     window.getAdLogs = function() {
       try { return JSON.parse(localStorage.getItem('adLogs') || '[]'); } catch(e) { return []; }
     };
-  </script>  <!-- SERVICE WORKER REGISTRATION + UPDATE BANNER -->  <script>
+
+    /* -------------------------
+       Search handling (debounced, non-blocking)
+       ------------------------- */
+    const SEARCH_DEBOUNCE_MS = 160;
+    let searchTimer = null;
+    let loaderTimer = null;
+
+    function performFilter(val) {
+      const txt = (val || "").toLowerCase();
+      const filtered = allData.filter(p =>
+        ((p.Catégorie || p.Categorie || p.category || "").toString().toLowerCase() === "poste") &&
+        (
+          (p.Texte||p.Bio||p.Info||"").toString().toLowerCase().includes(txt) ||
+          (p.Name||"").toString().toLowerCase().includes(txt) ||
+          (p.Description||p.Desc||"").toString().toLowerCase().includes(txt)
+        )
+      );
+      displayExplorer(filtered);
+    }
+
+    function filterSearchDebounced(val){
+      // clear previous timers
+      if (searchTimer) clearTimeout(searchTimer);
+      if (loaderTimer) clearTimeout(loaderTimer);
+
+      // show loader only if search will take more than a short delay
+      loaderTimer = setTimeout(() => { showLoader(); }, 120);
+
+      searchTimer = setTimeout(() => {
+        try {
+          // perform filter off the immediate input event to keep input responsive
+          if (window.requestIdleCallback) {
+            requestIdleCallback(() => {
+              performFilter(val);
+              clearTimeout(loaderTimer);
+              hideLoader();
+            }, {timeout:300});
+          } else {
+            setTimeout(() => {
+              performFilter(val);
+              clearTimeout(loaderTimer);
+              hideLoader();
+            }, 0);
+          }
+        } catch(e){
+          clearTimeout(loaderTimer);
+          hideLoader();
+          console.error(e);
+        }
+      }, SEARCH_DEBOUNCE_MS);
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      filterSearchDebounced(e.target.value);
+    });
+
+    /* -------------------------
+       Initialization: load JSON & adjust layout
+       ------------------------- */
+    document.addEventListener('DOMContentLoaded', () => {
+      adjustExplorerTop();
+      // prevent header from causing page scroll - body overflow hidden ensures no native body scrollbars
+      showLoader();
+      fetch("index.json")
+        .then(r => r.json())
+        .then(files => Promise.all(files.map(f => fetch(f).then(r => r.json()))))
+        .then(jsons => {
+          jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d));
+          shuffle(allData);
+          displayExplorer(allData);
+          hideLoader();
+        }).catch(err => {
+          console.error("Erreur chargement JSON:", err);
+          explorerEl.innerHTML = '<div style="color:#999;padding:20px;text-align:center">Pa kapab chaje kontni (index.json).</div>';
+          hideLoader();
+        });
+    });
+
+  </script>
+
+  <script>
     window._swReg = null;
     function showUpdateBanner() {
       if (document.getElementById('sw-update-banner')) return;
@@ -608,7 +659,9 @@
           .catch(err => console.warn('SW register failed:', err));
       });
     }
-  </script>  <!-- Prevent pinch-zoom / gesturestart / double-tap zoom (minimal, preserves vertical scrolling) -->  <script>
+  </script>
+
+  <script>
     document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
     document.addEventListener('touchmove', function (e) {
       if (e.scale && e.scale !== 1) { e.preventDefault(); }
@@ -627,56 +680,27 @@
         lastTouch = now;
       }, { passive: false });
     })();
-  </script> 
+  </script>
+
   <script type='text/javascript' src='//pl28135197.effectivegatecpm.com/3b/5a/09/3b5a097d28211945158c20a3f4879260.js'></script>
+
   <script>
 (function(){
   const PAYPAL_URL = 'https://www.paypal.com/ncp/payment/MCJHCJ85AC5AJ';
-
   const logo = document.querySelector('.header .logo');
-  if(!logo){
-    console.warn('Logo pa jwenn. Asire ou gen <div class="logo"> nan header.');
-    return;
-  }
-
+  if(!logo) return;
   if (!logo.hasAttribute('tabindex')) logo.setAttribute('tabindex', '0');
   logo.setAttribute('role', 'link');
-
   let handled = false;
-
-  function openPaypal(){
-    window.open(PAYPAL_URL, '_blank', 'noopener,noreferrer');
-  }
-
+  function openPaypal(){ window.open(PAYPAL_URL, '_blank', 'noopener,noreferrer'); }
   logo.addEventListener('pointerdown', ()=>{ handled=false; });
   logo.addEventListener('pointerup', ()=>{ handled=true; openPaypal(); });
   logo.addEventListener('click', ()=>{ if(!handled) openPaypal(); });
-
-  logo.addEventListener('keydown', (e)=>{
-    if(e.key==='Enter' || e.key===' '){
-      e.preventDefault();
-      openPaypal();
-    }
-  });
+  logo.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openPaypal(); } });
 })();
-  </script><!-- START: only allow copying the .post-name --><style>
-  body, body * {
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
-  }
+  </script>
 
-  .post-name,
-  input, textarea {
-    -webkit-user-select: text !important;
-    -moz-user-select: text !important;
-    -ms-user-select: text !important;
-    user-select: text !important;
-  }
-
-  .post-name { cursor:text; }
-</style><script>
+  <script>
   document.addEventListener('copy', function(e) {
     try {
       const sel = window.getSelection();
@@ -696,5 +720,6 @@
       try { e.preventDefault(); } catch(e){}
     }
   }, false);
-</script> </body>
-  </html>
+</script>
+</body>
+</html>
